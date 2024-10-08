@@ -1,0 +1,156 @@
+{
+	"info": {
+		"_postman_id": "90fc26df-8381-4ad8-8a65-6ca230322d3c",
+		"name": "Exercise2",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "38824412",
+		"_collection_link": "https://www.postman.com/api-testing-training-1653/workspace/api-testing-training-workspace/collection/38824412-90fc26df-8381-4ad8-8a65-6ca230322d3c?action=share&source=collection_link&creator=38824412"
+	},
+	"item": [
+		{
+			"name": "GetProducts",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"//declarations\r",
+							"var jsonReq = JSON.parse(pm.request.body);\r",
+							"var jsonData = pm.response.json();\r",
+							"\r",
+							"\r",
+							"\r",
+							"pm.test(\"Request Message is [\"+JSON.stringify(jsonReq)+\"]\",function(){\r",
+							"    //this method will include the response in the log file\r",
+							"});\r",
+							"\r",
+							"//refactoring\r",
+							"pm.test(\"Status code is 200\", function () {\r",
+							"  pm.response.to.have.status(200);\r",
+							"});\r",
+							"\r",
+							"\r",
+							"\r",
+							"pm.test(\"ID is existing the in the response\",function(){\r",
+							"    pm.expect(jsonData.id)\r",
+							"});\r",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"pm.environment.set('randomID', Math.round(Math.random() * 99));\r",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"id\": \"{{randomID}}\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{productIDendpoint}}/products/{{randomID}}",
+					"host": [
+						"{{productIDendpoint}}"
+					],
+					"path": [
+						"products",
+						"{{randomID}}"
+					],
+					"query": [
+						{
+							"key": "",
+							"value": null,
+							"disabled": true
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "UpdateProduct",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"var RandomProduct = [\"monitor\", \"camera\", \"phone\", \"keyboard\", \"headphones\"]; //used array because of multiple items that we want to choose from\r",
+							"pm.environment.set('RandomProduct',RandomProduct);\r",
+							"pm.environment.set(\"RandomProduct\", RandomProduct[Math.floor(Math.random() * RandomProduct.length)]); //randpmize the array and input from from the data driven value in body "
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "  {\r\n    \"name\": \"{{RandomProduct}}\"\r\n  }",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{productIDendpoint}}/products/{{randomID}}",
+					"host": [
+						"{{productIDendpoint}}"
+					],
+					"path": [
+						"products",
+						"{{randomID}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "DeleteProduct",
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"url": {
+					"raw": "{{productIDendpoint}}/products/{{randomID}}",
+					"host": [
+						"{{productIDendpoint}}"
+					],
+					"path": [
+						"products",
+						"{{randomID}}"
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"variable": [
+		{
+			"key": "randomProd",
+			"value": ""
+		}
+	]
+}

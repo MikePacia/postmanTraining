@@ -1,0 +1,248 @@
+{
+	"info": {
+		"_postman_id": "3ea6b69e-8bc8-44d2-a041-c7b860c67adb",
+		"name": "Exercise1",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "38824412",
+		"_collection_link": "https://www.postman.com/api-testing-training-1653/workspace/api-testing-training-workspace/collection/38824412-3ea6b69e-8bc8-44d2-a041-c7b860c67adb?action=share&source=collection_link&creator=38824412"
+	},
+	"item": [
+		{
+			"name": "Create new User",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"var jsonReq = JSON.parse(pm.request.body);\r",
+							"pm.test(\"Request Message is [\"+JSON.stringify(jsonReq)+\"]\",function(){\r",
+							"    //this method will include the response in the log file\r",
+							"});\r",
+							"var jsonData = pm.response.json();\r",
+							"pm.test(\"createdAt is existing the in the response\",function(){\r",
+							"    pm.expect(jsonData.createdAt);\r",
+							"});\r",
+							"pm.test(\"Validate that the response code is 201 and the name is displayed\",()=>{\r",
+							"    pm.response.to.have.status(201);\r",
+							"    pm.expect(jsonData.name).to.have.eql(pm.environment.get('Name'));\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Validate that ID is existing in the response and the response code is 201\",()=>{\r",
+							"    pm.expect(jsonData.id).to.have.eql(pm.globals.get('id'));\r",
+							"});"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "name",
+						"value": "Mike",
+						"type": "text",
+						"disabled": true
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"name\": \"Mike Kristian Pacia\" //creates a new user with this name\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{mock_Api_url}}/users",
+					"host": [
+						"{{mock_Api_url}}"
+					],
+					"path": [
+						"users"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Read User by ID",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"\r",
+							"var jsonData = pm.response.json();\r",
+							"pm.test(\"Status code is 200\", function () {\r",
+							"  pm.response.to.have.status(200);\r",
+							"});\r",
+							"try {\r",
+							"    \r",
+							"}"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{mock_Api_url}}/users/:{{id}}",
+					"host": [
+						"{{mock_Api_url}}"
+					],
+					"path": [
+						"users",
+						":{{id}}"
+					],
+					"query": [
+						{
+							"key": "",
+							"value": "",
+							"disabled": true
+						},
+						{
+							"key": "",
+							"value": "",
+							"disabled": true
+						}
+					],
+					"variable": [
+						{
+							"key": "{{id}}",
+							"value": "{{id}}"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Update user by ID",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"var jsonReq = JSON.parse(pm.request.body);\r",
+							"pm.test(\"Request Message is [\"+JSON.stringify(jsonReq)+\"]\",function(){\r",
+							"    //this method will include the response in the log file\r",
+							"});\r",
+							"var jsonData = pm.response.json();\r",
+							"pm.test(\"createdAt is existing the in the response\",function(){\r",
+							"    pm.expect(jsonData.createdAt)\r",
+							"});\r",
+							"pm.test(\"Name is existing the in the response\",function(){\r",
+							"    pm.expect(jsonData.name)\r",
+							"});\r",
+							"pm.test(\"Avatar is existing the in the response\",function(){\r",
+							"    pm.expect(jsonData.avatar)\r",
+							"    console.log(jsonData.avatar)\r",
+							"});\r",
+							"pm.test(\"ID is existing the in the response\",function(){\r",
+							"    pm.expect(jsonData.id)\r",
+							"});"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"name\": \"Mike Kristian2\" //Will update to this name\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{mock_Api_url}}/users/:{{id}}",
+					"host": [
+						"{{mock_Api_url}}"
+					],
+					"path": [
+						"users",
+						":{{id}}"
+					],
+					"query": [
+						{
+							"key": "",
+							"value": "",
+							"disabled": true
+						}
+					],
+					"variable": [
+						{
+							"key": "{{id}}",
+							"value": "{{id}}",
+							"description": "the ID of the user that you want to update"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Delete user by ID",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {\r",
+							"  pm.response.to.have.status(200);\r",
+							"});"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"url": {
+					"raw": "{{mock_Api_url}}/users/:{{id}}",
+					"host": [
+						"{{mock_Api_url}}"
+					],
+					"path": [
+						"users",
+						":{{id}}"
+					],
+					"variable": [
+						{
+							"key": "{{id}}",
+							"value": "{{id}}",
+							"description": "use the ID of the id that you want to delete"
+						}
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
