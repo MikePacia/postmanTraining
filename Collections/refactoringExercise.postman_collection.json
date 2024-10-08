@@ -1,0 +1,247 @@
+{
+	"info": {
+		"_postman_id": "5236585e-a945-413d-ba9b-985e3bb1f42b",
+		"name": "refactoringExercise",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "38824412",
+		"_collection_link": "https://www.postman.com/api-testing-training-1653/workspace/api-testing-training-workspace/collection/38824412-5236585e-a945-413d-ba9b-985e3bb1f42b?action=share&source=collection_link&creator=38824412"
+	},
+	"item": [
+		{
+			"name": "getProduct",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"let jsonData = pm.response.json();\r",
+							"try {\r",
+							"    //declarations\r",
+							"    jsonData;\r",
+							"\r",
+							"    //test\r",
+							"    pm.test(\"Products retrieved are matched\", () => {\r",
+							"        pm.expect(jsonData.name).to.eql(pm.environment.get(\"expectedProduct\"));\r",
+							"        console.log(jsonData.name)//display the value\r",
+							"        pm.expect(jsonData.quantity).to.eql(Number(jsonData.quantity));\r",
+							"        console.log(jsonData.quantity)//display the value\r",
+							"        pm.expect(jsonData.id).to.eql(pm.environment.get(\"expectedId\"));\r",
+							"        console.log(jsonData.id)//display the value\r",
+							"            //validate response code 200\r",
+							"            pm.test(\"Validate that the response code is 200\",()=>{\r",
+							"            pm.response.to.have.status(200);\r",
+							"});\r",
+							"    });\r",
+							"} catch (e){\r",
+							"    pm.test(\"response is valid\", () => {\r",
+							"        pm.expect.fail(\"response body is not json\");\r",
+							"    });\r",
+							"}\r",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{Products_endpoint_Url}}/products/:{{expectedId}}",
+					"host": [
+						"{{Products_endpoint_Url}}"
+					],
+					"path": [
+						"products",
+						":{{expectedId}}"
+					],
+					"variable": [
+						{
+							"key": "{{expectedId}}",
+							"value": "{{expectedId}}"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "deleteProduct",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							" pm.test(\"Validate that the response code is 200\",()=>{\r",
+							"            pm.response.to.have.status(200);\r",
+							"});"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"url": {
+					"raw": "{{Products_endpoint_Url}}/products/:{{expectedId}}",
+					"host": [
+						"{{Products_endpoint_Url}}"
+					],
+					"path": [
+						"products",
+						":{{expectedId}}"
+					],
+					"variable": [
+						{
+							"key": "{{expectedId}}",
+							"value": "{{expectedId}}"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "updateTheProduct",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"var RandomProduct = [\"monitor\", \"camera\", \"phone\", \"keyboard\", \"headphones\"]; //used array because of multiple items that we want to choose from\r",
+							"pm.environment.set('RandomProduct',RandomProduct);\r",
+							"pm.environment.set(\"RandomProduct\", RandomProduct[Math.floor(Math.random() * RandomProduct.length)]); //randpmize the array and input from from the data driven value in body "
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"let jsonData = pm.response.json();\r",
+							"try {\r",
+							"    //declarations\r",
+							"    jsonData;\r",
+							"\r",
+							"    //test\r",
+							"    pm.test(\"Products retrieved are matched\", () => {\r",
+							"        pm.expect(jsonData.name).to.eql(jsonData.name);\r",
+							"        console.log(jsonData.name)//display the value\r",
+							"        pm.expect(jsonData.quantity).to.eql(Number(jsonData.name));\r",
+							"        console.log(jsonData.quantity)//display the value\r",
+							"        pm.expect(jsonData.id).to.eql(jsonData.id);\r",
+							"        console.log(jsonData.id)//display the value\r",
+							"    });\r",
+							"} catch {\r",
+							"    pm.test(\"response is valid\", () => {\r",
+							"        pm.expect.fail(\"response body is not json\");\r",
+							"    });\r",
+							"}\r",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "PATCH",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": " {\r\n    \"name\": \"{{RandomProduct}}\"\r\n  }",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{Products_endpoint_Url}}/products/:{{expectedId}}",
+					"host": [
+						"{{Products_endpoint_Url}}"
+					],
+					"path": [
+						"products",
+						":{{expectedId}}"
+					],
+					"variable": [
+						{
+							"key": "{{expectedId}}",
+							"value": "{{expectedId}}"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "CreateNewProduct",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"var jsonReq = JSON.parse(pm.request.body);\r",
+							"pm.test(\"Request Message is [\"+JSON.stringify(jsonReq)+\"]\",function(){\r",
+							"    //this method will include the response in the log file\r",
+							"});\r",
+							"var jsonData = pm.response.json();\r",
+							"pm.test(\"createdAt is existing the in the response\",function(){\r",
+							"    pm.expect(jsonData.createdAt);\r",
+							"});\r",
+							"pm.test(\"Validate that the response code is 201 and the name is displayed\",()=>{\r",
+							"    pm.response.to.have.status(201);\r",
+							"    pm.expect(jsonData.name).to.have.eql(pm.environment.get('Name'));\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Validate that ID is existing in the response and the response code is 201\",()=>{\r",
+							"    pm.expect(jsonData.id).to.have.eql(pm.globals.get('id'));\r",
+							"});"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"name\": \"computer\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{Products_endpoint_Url}}/products",
+					"host": [
+						"{{Products_endpoint_Url}}"
+					],
+					"path": [
+						"products"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
